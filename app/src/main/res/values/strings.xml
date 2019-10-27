@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">Readit</string>
+    <string name="description">Description : </string>
+    <string name="publisher">Publisher : </string>
+    <string name="publishedDate">Published Date : </string>
+    <string name="Add_to_favourits">Add To favourites</string>
+    <string name="show_preview">Show Preview</string>
+    <string name="author">Author : </string>
+    <string name="favourites">Favourite Books</string>
+    <string name="appwidget_text">Every things Ok</string>
+    <string name="add_widget">Add widget</string>
+    <string name="adUnitId">ca-app-pub-5639876944507815/6598591388</string>
+    <string name="hello">Hello</string>
+    <string name="api_key">https://www.googleapis.com/books/v1/volumes?q=harry</string>
+</resources>
