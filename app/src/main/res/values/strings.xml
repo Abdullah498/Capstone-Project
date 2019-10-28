@@ -12,4 +12,7 @@
     <string name="adUnitId">ca-app-pub-5639876944507815/6598591388</string>
     <string name="hello">Hello</string>
     <string name="api_key">https://www.googleapis.com/books/v1/volumes?q=harry</string>
+    <string name="book_added">Book Added To Favourites</string>
+    <string name="book_deleted">Book Deleted From Favourites</string>
+    <string name="added_to_favourites">Added to favourites</string>
 </resources>

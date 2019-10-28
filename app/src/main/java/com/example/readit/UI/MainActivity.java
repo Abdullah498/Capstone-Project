@@ -28,6 +28,7 @@ import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.initialization.InitializationStatus;
 import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
+import com.google.firebase.analytics.FirebaseAnalytics;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -57,12 +58,21 @@ public class MainActivity extends AppCompatActivity {
 
     private AdView mAdView;
 
+    private FirebaseAnalytics mFirebaseAnalytics;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
 
+        // Obtain the FirebaseAnalytics instance.
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+        Bundle bundle = new Bundle();
+        bundle.putString(FirebaseAnalytics.Param.ITEM_ID, "squawker-4018d");
+        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "project-954459295500\n");
+        bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, "image");
+        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
 
         ButterKnife.bind(this);
 
@@ -75,15 +85,9 @@ public class MainActivity extends AppCompatActivity {
 
 
         //setup AdMob
-
-        /*MobileAds.initialize(this, new OnInitializationCompleteListener() {
-            @Override
-            public void onInitializationComplete(InitializationStatus initializationStatus) {
-            }
-        });*/
-        MobileAds.initialize(this,"ca-app-pub-5639876944507815~7748021524");
-                mAdView = findViewById(R.id.adView);
-        AdRequest adRequest = new AdRequest.Builder().build();
+        MobileAds.initialize(this);
+        mAdView = findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().addTestDevice(AdRequest.DEVICE_ID_EMULATOR).build();
         mAdView.loadAd(adRequest);
     }
 
@@ -159,7 +163,7 @@ public class MainActivity extends AppCompatActivity {
 
             Log.d("Length of items",Integer.toString(items.length()));
             for (int i=0; i<items.length(); i++){
-                if(i==1)
+                if(i==2)
                     continue;
                 Log.d("@@@@@@@",Integer.toString(i));
                 JSONObject currentBook = items.getJSONObject(i);

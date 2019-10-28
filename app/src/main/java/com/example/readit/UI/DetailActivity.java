@@ -2,6 +2,7 @@ package com.example.readit.UI;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -23,6 +24,8 @@ import com.example.readit.Room.AppDatabase;
 import com.example.readit.Room.FavouritesViewModel;
 import com.example.readit.model.BookData;
 import com.squareup.picasso.Picasso;
+
+import java.util.List;
 
 public class DetailActivity extends AppCompatActivity {
 
@@ -97,13 +100,22 @@ public class DetailActivity extends AppCompatActivity {
         
         //add to favourites : 
 
-        final SharedPreferences preferences = getSharedPreferences(id, Context.MODE_PRIVATE);
-        favFlag = preferences.getInt(id, 0);
 
-        if (favFlag ==1){
-            favouritesBtn.setBackgroundColor(getResources().getColor(R.color.white));
-            favouritesBtn.setText("Added to favourites".toUpperCase());
-        }
+        favouritesViewModel.getBooksListLiveData().observe(DetailActivity.this, new Observer<List<BookData>>() {
+            @Override
+            public void onChanged(List<BookData> books) {
+                for (int i=0;i<books.size();i++){
+                    if (id.equals(books.get(i).getId())) {
+                        favouritesBtn.setBackgroundColor(getResources().getColor(R.color.white));
+                        favouritesBtn.setText(R.string.added_to_favourites);
+                        favFlag = 1;
+                        break;
+                    }
+                }
+
+            }
+        });
+
 
         favouritesBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -111,11 +123,9 @@ public class DetailActivity extends AppCompatActivity {
                 if (favFlag==0){
                     new AddToFavouriteAsyncTask().execute();
                     favouritesBtn.setBackgroundColor(getResources().getColor(R.color.white));
-                    favouritesBtn.setText("Added to favourites".toUpperCase());
-                    SharedPreferences.Editor editor = preferences.edit();
-                    editor.putInt(id, 1);
-                    editor.apply();
-                    favFlag = 1;
+                    favouritesBtn.setText(R.string.added_to_favourites);
+
+                    favFlag=1;
 
                     nameOfBook=title;
                     img=thumbnail;
@@ -123,12 +133,11 @@ public class DetailActivity extends AppCompatActivity {
                 }else{
                     favouritesViewModel.deleteBook(bookData);
                     favouritesBtn.setBackgroundResource(R.color.red);
-                    favouritesBtn.setText("Add to favourites".toUpperCase());
-                    SharedPreferences.Editor editor = preferences.edit();
-                    editor.putInt(id, 0);
-                    editor.apply();
-                    favFlag = 0;
-                    Toast.makeText(getApplicationContext(), " Book Deleted From Favourites", Toast.LENGTH_SHORT).show();
+                    favouritesBtn.setText(R.string.Add_to_favourits);
+
+                    favFlag=0;
+
+                    Toast.makeText(getApplicationContext(), R.string.book_deleted, Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -146,7 +155,7 @@ public class DetailActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(Void aVoid) {
-            Toast.makeText(getApplicationContext(), "Book Added To Favourites", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), R.string.book_added, Toast.LENGTH_SHORT).show();
         }
     }
 }

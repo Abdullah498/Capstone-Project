@@ -44,6 +44,9 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.BookViewHold
         final BookData bookData=books.get(position);
         Log.d("onBindViewHolder",bookData.getThumbnail());
         Picasso.with(mcontext).load(bookData.getThumbnail()).into(holder.poster);
+
+        holder.poster.setContentDescription(bookData.getTitle());
+
         holder.poster.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
